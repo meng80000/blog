@@ -1,0 +1,107 @@
+*{
+    margin: 0;
+}
+a{
+    text-decoration: none;
+}
+.float-l{
+    float: left;
+}
+.float-r{
+    float: right;
+}
+.head-box nav{
+    border-radius: 0px;
+}
+.col-md-8 .item .ot img{
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+}
+.nav .jpg{
+    width: 20px;
+    height: 20px;
+}
+.title{
+    border-bottom: 1px solid #08c !important;
+    margin-top: 5px;
+}
+.ot{
+    font-size: 16px;
+    /*height: 400px;*/
+    margin-top: 15px;
+    /*border-bottom: 1px solid #08c !important;*/
+}
+.ot-img{
+    margin-right: 8px;
+}
+
+.foot{
+    margin-top: 45px;
+    margin-bottom: -51px;
+}
+.foot .writer{
+    margin-right: 5px;
+}
+.reply{
+    margin-left: 17px;
+}
+.left1{
+    margin-top: 0px;
+}
+.left2{
+    margin-top: -8px;
+}
+.col-md-4 {
+    width: 26.333333%;
+}
+.list-group-item {
+    padding: 4px 27px;
+    margin-bottom: -4px;
+}
+.item{
+    /*border-bottom: 1px solid #08c !important;*/
+    margin-bottom: 80px;
+}
+ul, ol {
+    margin-top: 20px;
+    margin-bottom: 16px;
+}
+
+.ok{
+    margin-left: 20px;
+    margin-right: 50px;
+    text-align: center;
+    line-height: 50px;
+    height: 50px;
+    width: 50px;
+    border: 1px solid #08c !important;
+}
+.no{
+    margin-right: 15px;
+    text-align: center;
+    line-height: 50px;
+    height: 50px;
+    width: 50px;
+    border: 1px solid #08c !important;
+}
+.oner{
+    border-top: 1px solid #08c !important;
+    margin-bottom: 20px;
+}
+#comment{
+    border-bottom: 1px solid #08c !important;
+}
+#comment-box{
+    border-bottom: 1px solid #08c !important;
+    height: 100px;
+    width: 100%;
+}
+.comment{
+    margin-left: 30px;
+    border-bottom: 1px solid #08c !important;
+}
+.content{
+    font-size: 16px;
+    border-bottom: 1px dashed #08c !important;
+}

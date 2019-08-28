@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="/static/css/commons666.css">
+</head>
+<body>
+<div class="head-box">
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+          <a class="navbar-brand">{{ obj.blog.title }}</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+              {% if current_obj.username %}
+                  <li><a href="#"><img class="jpg" src="{{ current_obj.avatar }}" alt=""></a></li>
+                  <li><a href="#">{{ current_obj.nickname }}</a></li>
+                  <li><a href="/{{ obj.blog.site }}/s/article={{ article_detail.article_id }}/">注销</a></li>
+              {% else %}
+                  <li><a href="/login/">登录</a></li>
+                  <li><a href="#">注册</a></li>
+              {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+</div>
+
+<div class="container">
+
+    <div class="col-md-4">
+
+        <div class="left1 list-group">
+          <div href="#" class="list-group-item active">
+            公告
+          </div >
+            <div class="list-group-item">昵称：<a href="">{{ obj.nickname }}</a></div>
+            <div class="list-group-item">粉丝：<a href="">{{ followers }}</a></div>
+            <div class="list-group-item">关注：<a href="">{{ users }}</a></div>
+            <div class="list-group-item">邮箱：<a href="">{{ obj.email }}</a></div>
+        </div>
+
+        <div class="left2 list-group">
+          <div href="#" class="list-group-item active">
+            标签
+          </div >
+            {% for msg in tag_list %}
+                {% if msg.tags__title %}
+                    <div class="list-group-item"><a href="/{{ obj.blog.site }}/tag={{ msg.tags__nid }}/">{{ msg.tags__title }}({{ msg.c }})</a></div>
+                {% else %}
+                    <div class="list-group-item"><a href="/{{ obj.blog.site }}/tag=others/">未分类({{ msg.c }})</a></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="left2 list-group">
+          <div href="#" class="list-group-item active">
+            分类
+          </div >
+            {% for i in category_list %}
+            <div class="list-group-item"><a href="/{{ obj.blog.site }}/category={{ i.category_id }}/">{{ i.category__title }}({{ i.c }})</a></div>
+            {% endfor %}
+        </div>
+
+        <div class="left2 list-group">
+          <div href="#" class="list-group-item active">
+            时间
+          </div >
+            {% for i in date_list %}
+                <div class="list-group-item"><a href="/{{ obj.blog.site }}/date_time={{ i.c }}/">{{ i.c }}({{ i.ct }})</a></div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div class="col-md-8">
+
+        <div class="item">
+            <div class="title">
+                <h2>{{ article_detail.article.title }}</h2>
+            </div>
+            <div class="ot">
+                {{ article_detail.content|safe }}
+            </div>
+            <div class="foot">
+                {% csrf_token %}
+                {% if up_down_msg.up_down == True and up_down_msg.user_id == current_obj.nid %}
+                    <a class="ok fa fa-thumbs-up" onclick="up({{ article_detail.article_id }})">{{ article_detail.article.up_count }}</a>
+                    <a class="no fa fa-thumbs-o-down" onclick="down({{ article_detail.article_id }})">{{ article_detail.article.down_count }}</a>
+                {% elif up_down_msg.up_down == False and up_down_msg.user_id == current_obj.nid %}
+                    <a class="ok fa fa-thumbs-o-up" onclick="up({{ article_detail.article_id }})">{{ article_detail.article.up_count }}</a>
+                    <a class="no fa fa-thumbs-down" onclick="down({{ article_detail.article_id }})">{{ article_detail.article.down_count }}</a>
+                {% else %}
+                    <a class="ok fa fa-thumbs-o-up" onclick="up({{ article_detail.article_id }})">{{ article_detail.article.up_count }}</a>
+                    <a class="no fa fa-thumbs-o-down" onclick="down({{ article_detail.article_id }})">{{ article_detail.article.down_count }}</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="oner">
+            <a class="writer fa fa-user-o" href="">{{ article_detail.article.blog.user.nickname }}</a>发布于{{ article_detail.article.create_time|date:"Y-m-d H:i:s" }}
+            <a href="" class="reply fa fa-commenting-o">{{ article_detail.article.comment_count }}</a>
+            <a href="" class="reply fa fa-eye ">{{ article_detail.article.read_count }}</a>
+        </div>
+        <div id="comment-box">
+            <div id="comment"><h4>评论列表</h4></div>
+            {{ comment_str|safe }}
+            <div id="reply" class="hide">
+                <textarea id="text" name="reply_msg" style="width: 100%;height: 30px;"></textarea>
+                <a href="" onclick="reply()">提交</a>
+            </div>
+        </div>
+{#        <div id="comment"><h4>评论列表</h4></div>#}
+{#        {{ comment_str|safe }}#}
+{#        <div id="reply" class="hide">#}
+{#            <textarea id="text" name="reply_msg" style="width: 100%;height: 30px;"></textarea>#}
+{#            <a href="" onclick="reply()">提交</a>#}
+{#        </div>#}
+{#        <div>{{ comment.content }}</div>#}
+    </div>
+</div>
+<script src="/static/jquery-3.2.1.js"></script>
+<script src="/static/plugins/kindeditor-4.1.10/kindeditor-all.js"></script>
+<script>
+    KindEditor.create("#msg",{
+        width:"100%",
+        height:"40px",
+{#        items:[#}
+{#        'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',#}
+{#        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',#}
+{#        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',#}
+{#        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',#}
+{#        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',#}
+{#        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',#}
+{#        'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',#}
+{#        'anchor', 'link', 'unlink', '|', 'about'#}
+{#        ],#}
+{#        noDisableItems:#}
+        resizeType:0,
+        uploadJson:"/upload_img.html",
+        extraFileUploadParams:{
+            "csrfmiddlewaretoken":"{{ csrf_token }}"
+        }
+    });
+    function up(article_id) {
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.ajax({
+            url:"/click.html/",
+            type:"POST",
+            data:{"status":"True","article_id":article_id,'csrfmiddlewaretoken': csrf},
+{#            dataType:"JSON",#}
+            success:function (arg) {
+                if(arg=="add_ok"){
+                    location.reload();
+                }else if(arg=="del_ok"){
+                    location.reload();
+                }else{
+                    alert(arg);
+                }
+            }
+        })
+    }
+    function down(article_id) {
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.ajax({
+            url:"/click.html/",
+            type:"POST",
+            data:{"status":"False","article_id":article_id,'csrfmiddlewaretoken': csrf},
+{#            dataType:"JSON",#}
+            success:function (arg) {
+                if(arg=="add_no"){
+                    location.reload();
+                }else if(arg=="del_no"){
+                    location.reload();
+                }else{
+                    alert(arg);
+                }
+            }
+        })
+    }
+    function come() {
+        var abc=$(this).prev();
+        console.log(abc.text());
+        $("#reply").removeClass("hide");
+{#        $("#text").attr("placeholder",e);#}
+    }
+    function reply() {
+        
+    }
+
+
+</script>
+</body>
+</html>

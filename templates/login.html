@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7-dist/css/bootstrap.css" />
+    <style>
+        .login{
+            width: 600px;
+            height: auto;
+            margin: 0 auto;
+            padding: 20px;
+            margin-top: 50px;
+            background-color: #2b669a;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="login">
+        <h1>{{ msg }}</h1>
+        <h2>用户登录</h2>
+        <form class="form-horizontal" method="post" action="/login/">
+            {% csrf_token %}
+              <div class="form-group">
+                <label  class="col-sm-2 control-label">用户名:</label>
+                <div class="col-sm-10">
+                  {{ obj.username }}{{ obj.errors.username.0 }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">密码:</label>
+                <div class="col-sm-10">
+                  {{ obj.password }}{{ obj.errors.password.0 }}
+                </div>
+              </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">验证码:</label>
+                    <div class="col-sm-5">
+                      <input type="text" class="form-control"  placeholder="验证码" name="code">{{ code_error }}
+                    </div>
+                    <div class="col-sm-5">
+                      <img style="width: 120px;height: 30px;" src="/check_code/">
+                    </div>
+                </div>
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <input type="submit" class="btn btn-default" value="登录" />{{ error_msg }}
+                </div>
+              </div>
+        </form>
+    </div>
+</body>
+</html>

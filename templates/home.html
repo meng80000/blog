@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>老李的自留地</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="/static/css/commons.css">
+    <link rel="icon" href="/static/title.ico" type="image/x-icon"/>
+</head>
+<body>
+<div class="head-box">
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+          <a class="navbar-brand" href="/">老表的技术论坛</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            {% if type_id %}
+                <li><a href="/">全部</a></li>
+            {% else %}
+                <li class="active"><a href="/">全部</a></li>
+            {% endif %}
+            {% for item in type_choice_list %}
+                {% if item.0 == type_id %}
+                    <li class="active"><a href="/all/{{ item.0 }}/">{{ item.1 }}</a></li>
+                {% else %}
+                    <li><a href="/all/{{ item.0 }}/">{{ item.1 }}</a></li>
+                {% endif %}
+            {% endfor %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+              {% if obj %}
+                  <li><a href="/blog/{{ obj.blog.site }}/">个人主页</a></li>
+                  <li><a href="#"><img class="jpg" src="{{ obj.avatar }}" alt=""></a></li>
+                  <li><a href="#">{{ obj.nickname }}</a></li>
+                  <li><a href="/{{ obj.blog.site }}/manage-0-0-0.html">管理</a></li>
+                  <li><a href="/logout/">注销</a></li>
+              {% else %}
+                  <li><a href="/login/">登录</a></li>
+                  <li><a href="#">注册</a></li>
+              {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+</div>
+
+<div class="container">
+
+    <div class="col-md-8">
+
+        {% for article in articles %}
+            <div class="item">
+                <div class="title"><a href="/{{ article.blog.site }}/article={{ article.nid }}/">{{ article.title }}</a></div>
+                <div class="ot clearfix">
+                    <a class="float-l" href=""><img src="{{ article.blog.user.avatar }}" alt=""></a>
+                    <span class="ot-text">
+                        {{ article.summary }}
+                    </span>
+                </div>
+                <div class="foot">
+                    <a class="writer fa fa-user-o" href="/blog/{{ article.blog.site }}/">{{ article.blog.user.nickname }}</a>发布于{{ article.create_time|date:"Y-m-d H:i:s" }}
+                    <a href="" class="reply fa fa-commenting-o">{{ article.comment_count }}</a><a href="" class="ok fa fa-thumbs-o-up">{{ article.up_count }}</a>
+                </div>
+            </div>
+        {% endfor %}
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                  {{ page_info.pager|safe }}
+              </ul>
+            </nav>
+
+    </div>
+
+    <div class="col-md-4">
+        
+        <div class="left1 list-group">
+          <a href="#" class="list-group-item active">
+            兔血推荐
+          </a>
+          <a href="#" class="list-group-item">震惊！10岁小娃竟然...</a>
+          <a href="#" class="list-group-item">朝鲜再创亚洲神话</a>
+          <a href="#" class="list-group-item">韩国登录太阳成功</a>
+          <a href="#" class="list-group-item">日本安倍再次怀孕</a>
+        </div>
+
+        <div class="left2 list-group">
+          <a href="#" class="list-group-item active">
+            热门评论
+          </a>
+          <a href="#" class="list-group-item">窗前明月光，地上鞋两双！</a>
+          <a href="#" class="list-group-item">是时候表演真正的技术了！</a>
+          <a href="#" class="list-group-item">十点嗨起来~！</a>
+          <a href="#" class="list-group-item">你妈喊你回家吃饭饭！</a>
+        </div>
+
+         <div class="left2 list-group">
+          <a href="#" class="list-group-item active">
+            征婚信息栏
+          </a>
+          <a href="#" class="list-group-item"><img src="/static/img/111.jpg" alt=""></a><p>27岁   本科  163</p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

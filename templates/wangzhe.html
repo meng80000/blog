@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>留言列表 -- HoverTree</title>
+</head>
+<body>
+<div>
+    <form action="/wangzhe.html" method="post" novalidate>
+        {% csrf_token %}
+        <p>文章标题</p>
+        {{ obj.title }}
+        <p>文章内容</p>
+        {{ obj.content }}
+        <input type="submit">
+    </form>
+</div>
+
+    <script src="/static/plugins/kindeditor-4.1.10/kindeditor-all.js"></script>
+<script>
+    KindEditor.create("#msg",{
+        width:"500px",
+        height:"500px",
+{#        items:[#}
+{#        'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',#}
+{#        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',#}
+{#        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',#}
+{#        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',#}
+{#        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',#}
+{#        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',#}
+{#        'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',#}
+{#        'anchor', 'link', 'unlink', '|', 'about'#}
+{#        ],#}
+{#        noDisableItems:#}
+        resizeType:0,
+        uploadJson:"/upload_img.html",
+        extraFileUploadParams:{
+            "csrfmiddlewaretoken":"{{ csrf_token }}"
+        }
+    })
+</script>
+</body>
+</html>

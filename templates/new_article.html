@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="/static/css/commons3.css">
+    <style>
+        #in{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="head-box">
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            <a class="navbar-brand">{{ current_obj.blog.title }}</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+              <a class="navbar-brand" href="/">首页</a>
+              {% if current_obj.username %}
+                  <li><a href="#"><img class="jpg" src="{{ current_obj.avatar }}" alt=""></a></li>
+                  <li><a href="#">{{ current_obj.nickname }}</a></li>
+                  <li><a href="/{{ current_obj.blog.site }}/manage-0-0-0.html">管理</a></li>
+                  <li><a href="/blog/s/{{ obj.username }}/">注销</a></li>
+              {% else %}
+                  <li><a href="/login/">登录</a></li>
+                  <li><a href="#">注册</a></li>
+              {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+</div>
+
+<div class="container">
+
+    <div class="col-md-4">
+
+        <div class="left1 list-group">
+          <div href="#" class="list-group-item active">
+            公告
+          </div >
+            <div class="list-group-item">昵称：<a href="">{{ current_obj.nickname }}</a></div>
+            <div class="list-group-item">粉丝：<a href="">{{ followers }}</a></div>
+            <div class="list-group-item">关注：<a href="">{{ users }}</a></div>
+            <div class="list-group-item">邮箱：<a href="">{{ current_obj.email }}</a></div>
+        </div>
+
+        <div class="left2 list-group">
+          <div href="#" class="list-group-item active">
+            标签
+          </div >
+            {% for msg in tag_list %}
+                {% if msg.tags__title %}
+                    <div class="list-group-item"><a href="/{{ current_obj.blog.site }}/tag={{ msg.tags__nid }}/">{{ msg.tags__title }}({{ msg.c }})</a></div>
+                {% else %}
+                    <div class="list-group-item"><a href="/{{ current_obj.blog.site }}/tag=others/">未分类({{ msg.c }})</a></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="left2 list-group">
+          <div href="#" class="list-group-item active">
+            分类
+          </div >
+            {% for i in category_list %}
+            <div class="list-group-item"><a href="/{{ current_obj.blog.site }}/category={{ i.category_id }}/">{{ i.category__title }}({{ i.c }})</a></div>
+            {% endfor %}
+        </div>
+
+        <div class="left2 list-group">
+          <div href="#" class="list-group-item active">
+            时间
+          </div >
+            {% for i in date_list %}
+                <div class="list-group-item"><a href="/{{ current_obj.blog.site }}/date_time={{ i.c }}/">{{ i.c }}({{ i.ct }})</a></div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div class="col-md-8">
+        <div class="msg">
+            <form action="/{{ site }}/new_article/" method="post" novalidate>
+                {% csrf_token %}
+                <p>文章标题</p>
+                {{ obj.title }}
+                <p>文章内容</p>
+                {{ obj.content }}
+                <h6>个人标签</h6>
+                {% for i in categorys %}
+                        {{ i.tags__title }}<input type="checkbox" name="tag" value="{{ i.tags__nid }}">
+                {% endfor %}
+                <h6>文章分类</h6>
+                {% for i in type_choice_list %}
+                    {{ i.1 }}<input type="checkbox" name="type" value="{{ i.0 }}">
+                {% endfor %}
+{#                <div><a id="put" href="">提交</a></div>#}
+                <input type="submit" class="btn btn-default" value="提交" />
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/static/plugins/kindeditor-4.1.10/kindeditor-all.js"></script>
+<script>
+    KindEditor.create("#msg",{
+        width:"100%",
+        height:"400px",
+{#        items:[#}
+{#        'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',#}
+{#        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',#}
+{#        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',#}
+{#        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',#}
+{#        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',#}
+{#        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',#}
+{#        'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',#}
+{#        'anchor', 'link', 'unlink', '|', 'about'#}
+{#        ],#}
+{#        noDisableItems:#}
+        resizeType:0,
+        uploadJson:"/upload_img.html",
+        extraFileUploadParams:{
+            "csrfmiddlewaretoken":"{{ csrf_token }}"
+        }
+    });
+
+    function down(article_id) {
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.ajax({
+            url:"/click.html/",
+            type:"POST",
+            data:{"status":"False","article_id":article_id,'csrfmiddlewaretoken': csrf},
+{#            dataType:"JSON",#}
+            success:function (arg) {
+                if(arg=="add_no"){
+                    location.reload();
+                }else if(arg=="del_no"){
+                    location.reload();
+                }else{
+                    alert(arg);
+                }
+            }
+        })
+    }
+</script>
+
+</body>
+</html>
